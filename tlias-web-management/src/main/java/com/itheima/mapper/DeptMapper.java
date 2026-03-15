@@ -1,8 +1,8 @@
 package com.itheima.mapper;
 
 import com.itheima.pojo.Dept;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 
@@ -10,4 +10,16 @@ import java.util.List;
 public interface DeptMapper {
     @Select("select * from dept order by update_time desc;")
     List<Dept> findAll();
+
+    @Delete("delete from dept where id = #{id}")
+    void deleteById(Integer id);
+
+    @Insert("insert into dept(name, create_time, update_time) values (#{name},#{createTime},#{updateTime})")
+    void insert(Dept dept);
+
+    @Select("select dept.id,dept.name,dept.create_time,dept.update_time from dept where id=#{deptId}")
+    Dept getById(Integer deptId);
+
+    @Update("update dept set name=#{name},update_time=#{updateTime} where id = #{id}")
+    void update(Dept dept);
 }
