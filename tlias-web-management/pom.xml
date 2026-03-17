@@ -67,6 +67,13 @@
 <!--            <version>1.2.19</version>-->
 <!--        </dependency>-->
 <!--        版本控制测试标记-->
+
+        <!--分页插件PageHelper-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.4.7</version>
+        </dependency>
     </dependencies>
 
     <build>
