@@ -7,13 +7,26 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 30MB
+
+
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     #开启驼峰映射
     map-underscore-to-camel-case: true
 
+
 #配置事务管理日志级别
 logging:
   level:
     org.springframework.jdbc.support.JdbcTransactionManager: debug
+#阿里云OSS
+aliyun:
+  oss:
+    endpoint: https://oss-cn-beijing.aliyuncs.com
+    bucketName: web-ai-code-zyt
+    region: cn-beijing
