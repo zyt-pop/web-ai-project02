@@ -16,4 +16,16 @@
         </foreach>
 
     </insert>
+
+    <delete id="deleteByEmpIds">
+        delete from emp_expr where emp_id in
+        <foreach collection="empIds" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="update">
+        update emp_expr set begin=#{begin},end=#{end},company=#{company},job=#{job}
+        where emp_id=#{empId}
+    </update>
 </mapper>

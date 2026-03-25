@@ -20,4 +20,23 @@ public interface EmpService {
      * 新增员工
      */
     void save(Emp emp) throws Exception;
+
+    /**
+     * 删除员工
+     * @param ids
+     */
+    void delete(List<Integer> ids);
+
+    /**
+     * 根据id查找员工信息----为了在修改员工信息前实现数据回显
+     * @param empId
+     * @return
+     */
+    Emp getById(Integer empId);
+
+    /**
+     * 更新员工信息
+     * @param emp
+     */
+    void update(Emp emp);
 }

@@ -2,10 +2,7 @@ package com.itheima.mapper;
 
 import com.itheima.pojo.Emp;
 import com.itheima.pojo.EmpQueryParam;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,4 +29,19 @@ public interface EmpMapper {
 
    // @Options(useGeneratedKeys = true,keyProperty = "id")
     void insert(Emp emp);
+
+    /**
+     * 根据ID批量删除员工
+     * @param ids
+     */
+    void deleteByIds(List<Integer> ids);
+
+    /**
+     * 根据ID查询员工
+     * @param empId
+     * @return
+     */
+    Emp getById(Integer empId);
+
+    void updateById(Emp emp);
 }
