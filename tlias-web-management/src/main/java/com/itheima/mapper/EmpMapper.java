@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 员工信息
@@ -44,4 +45,17 @@ public interface EmpMapper {
     Emp getById(Integer empId);
 
     void updateById(Emp emp);
+
+    /**
+     * 统计各职位员工数量
+     */
+    @MapKey("pos")
+    List<Map<String,Object>> countEmpJobData();
+
+    /**
+     * 统计各职位员工数量
+     */
+    @MapKey("pos")
+    List<Map<String,Object>> countEmpGenderData();
+
 }
