@@ -58,6 +58,15 @@ public class EmpServiceImpl implements EmpService {
             return new PageResult<Emp>(p.getTotal(),p.getResult());
     }
 
+    /**
+     * 查询所有员工信息
+     */
+    @Override
+    public List<Emp> list() {
+        List<Emp> empList = empMapper.list(new EmpQueryParam());
+        return empList;
+    }
+
     @Transactional(rollbackFor = Exception.class)       //事务管理-默认出现运行时异常RuntimeException才会回滚
     @Override
     public void save(Emp emp) throws Exception {
@@ -122,5 +131,11 @@ public class EmpServiceImpl implements EmpService {
             });
             empExprMapper.insertBatch(exprList);
         }
+    }
+
+    @Override
+    public List<Emp> isHasEmp(Integer deptId) {
+        List<Emp> empList = empMapper.isHasEmp(deptId);
+        return empList;
     }
 }

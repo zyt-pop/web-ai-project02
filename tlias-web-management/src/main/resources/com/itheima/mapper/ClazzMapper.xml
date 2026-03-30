@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.mapper.ClazzMapper">
+    <select id="page" resultType="com.itheima.pojo.Clazz">
+        select cz.id,cz.name, cz.room, cz.begin_date,cz.end_date, e.name masterName, cz.subject, cz.create_time, cz.update_time,
+        case when cz.end_date &lt; now() then '已结课'
+             when cz.begin_date &gt; now() then '未开课'
+        else '在读' end as status
+        from clazz cz left join emp e on cz.master_id=e.id
+        <where>
+            <if test="name != null and name != ''">
+                and cz.name like concat('%',#{name},'%')
+            </if>
+            <if test="begin!=null and end!=null">
+                and end_date between #{begin} and #{end}
+            </if>
+        </where>
+    </select>
+
+
+    <insert id="insert">
+        insert into clazz(name, room, begin_date, end_date, master_id, subject, create_time, update_time)
+        values (#{name},#{room},#{beginDate},#{endDate},#{masterId},#{subject},#{createTime},#{updateTime})
+    </insert>
+
+    <select id="getById" resultType="com.itheima.pojo.Clazz">
+        select * from clazz where id=#{id}
+    </select>
+
+
+
+    <delete id="deleteById">
+        delete from clazz where id=#{id}
+    </delete>
+
+
+    <update id="update">
+        update clazz
+        <set>
+            <if test="name != null and name != ''">name=#{name},</if>
+            <if test="room != null and room != ''">room=#{room},</if>
+            <if test="beginDate != null">begin_date=#{beginDate},</if>
+            <if test="endDate != null">end_date=#{endDate},</if>
+            <if test="masterId != null">master_id=#{masterId},</if>
+            <if test="subject != null">subject=#{subject},</if>
+            <if test="updateTime != null">update_time=#{updateTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+<!--    <select id="list" resultType="com.itheima.pojo.ClazzVO">-->
+<!--        select cz.id,cz.name, cz.room, cz.begin_date,cz.end_date,cz.master_id, e.name masterName,-->
+<!--               cz.subject, cz.create_time, cz.update_time-->
+<!--        from clazz cz left join emp e on cz.master_id=e.id-->
+<!--    </select>-->
+
+</mapper>

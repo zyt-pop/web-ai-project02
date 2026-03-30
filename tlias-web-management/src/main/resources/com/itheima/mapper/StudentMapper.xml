@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.mapper.StudentMapper">
+
+    <select id="page" resultType="com.itheima.pojo.Student">
+        select st.id, st.name, st.no, st.gender, st.phone, st.id_card, st.is_college, st.address, st.degree, st.graduation_date, st.clazz_id, st.violation_count, st.violation_score, st.create_time, st.update_time,
+               cz.id, cz.name as clazzName
+        from student st left join clazz cz on st.clazz_id = cz.id
+        <where>
+            <if test="name != null and name != ''">
+                and st.name like concat('%',#{name},'%')
+            </if>
+            <if test="degree!=null and degree!=null">
+                and degree =#{degree}
+            </if>
+            <if test="clazzId!=null">
+                and clazz_id =#{clazzId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert">
+        insert into student(name, no, gender, phone, id_card, is_college, address, degree, graduation_date, clazz_id, create_time, update_time)
+        values (#{name},#{no},#{gender},#{phone},#{idCard},#{isCollege},#{address},#{degree},#{graduationDate},#{clazzId},#{createTime},#{updateTime})
+    </insert>
+
+    <select id="getById" resultType="com.itheima.pojo.Student">
+        select *from student where id=#{id}
+    </select>
+
+    <update id="update">
+        update student
+        <set>
+            <if test="name!=null and name!=''">name=#{name},</if>
+            <if test="no!=null and no!=''">no=#{no},</if>
+            <if test="phone!=null and phone!=''">phone=#{phone},</if>
+            <if test="gender!=null">gender=#{gender},</if>
+            <if test="degree!=null">degree=#{degree},</if>
+            <if test="idCard!=null and idCard!=''">id_card=#{idCard},</if>
+            <if test="isCollege!=null">is_college=#{isCollege},</if>
+            <if test="address!=null and address!=''">address=#{address},</if>
+            <if test="graduationDate!=null">graduation_date=#{graduationDate},</if>
+            <if test="violationCount!=null">violation_count=#{violationCount},</if>
+            <if test="violationScore!=null">violation_score=#{violationScore},</if>
+            <if test="clazzId!=null">clazz_id=#{clazzId},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteByIds">
+        delete from student where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <update id="violation">
+        update student set violation_score=violation_score+#{score},violation_count=violation_count+1
+        where id = #{id}
+    </update>
+
+    <select id="countStudentClazzData" resultType="java.util.Map">
+        select (case clazz_id when 1 then 'JavaEE就业163期'
+                              when 2 then '前端就业90期'
+                              when 3 then 'JavaEE就业165期'
+                              when 4 then 'JavaEE就业166期'
+                              when 5 then '大数据就业58期'
+                              when 6 then 'JavaEE就业167期'
+                              when 7 then 'JavaWeb就业167期'
+                              when 8 then 'Python就业167期'
+                              when 9 then '大模型就业1期'
+                              when 10 then 'Objective-C就业322期'
+                              when 11 then 'GoLang就业58期'
+                              when 12 then '数据库技术'
+                              else 'undefined' end) clazz,count(1) num from student group by clazz_id
+    </select>
+
+    <select id="countStudentDegreeData" resultType="java.util.Map">
+        select (case degree when 1 then '初中'
+                            when 2 then '高中'
+                            when 3 then '大专'
+                            when 4 then '本科'
+                            when 5 then '硕士'
+                            when 6 then '博士'
+                            else 'undefined' end) as name,count(1) as value from student group by degree
+    </select>
+
+
+</mapper>

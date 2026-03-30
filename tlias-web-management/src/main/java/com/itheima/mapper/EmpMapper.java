@@ -58,4 +58,6 @@ public interface EmpMapper {
     @MapKey("pos")
     List<Map<String,Object>> countEmpGenderData();
 
+    //判断部门下是否有员工
+    List<Emp> isHasEmp(Integer deptId);
 }

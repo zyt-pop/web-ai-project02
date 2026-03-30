@@ -25,10 +25,17 @@ public class EmpController {
      */
     @GetMapping
     public Result page(EmpQueryParam empQueryParam){
-
         log.info("🍎🍊🍉---请求分页参数{}",empQueryParam);
         PageResult<Emp> result = empService.page(empQueryParam);
         return Result.success(result);
+    }
+    /**
+     * 查询所有员工
+     */
+    @GetMapping("/list")
+    public Result list(){
+        List<Emp> empList = empService.list();
+        return  Result.success(empList);
     }
 
     /**

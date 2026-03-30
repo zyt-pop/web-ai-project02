@@ -17,6 +17,11 @@ public interface EmpService {
     PageResult<Emp> page(EmpQueryParam empQueryParam);
 
     /**
+     * 查询所有员工
+     */
+    List<Emp> list();
+
+    /**
      * 新增员工
      */
     void save(Emp emp) throws Exception;
@@ -39,4 +44,9 @@ public interface EmpService {
      * @param emp
      */
     void update(Emp emp);
+
+
+
+    //判断部门下是否有员工
+    List<Emp> isHasEmp(Integer deptId);
 }

@@ -116,4 +116,9 @@
     </select>
 
 
+    <select id="isHasEmp" resultType="com.itheima.pojo.Emp">
+        select * from emp where dept_id=#{deptId}
+    </select>
+
+
 </mapper>
