@@ -19,6 +19,7 @@
                 and clazz_id =#{clazzId}
             </if>
         </where>
+        order by create_time desc
     </select>
 
     <insert id="insert">

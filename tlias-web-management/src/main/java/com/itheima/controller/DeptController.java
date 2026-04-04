@@ -1,5 +1,6 @@
 package com.itheima.controller;
 
+import com.itheima.anno.Log;
 import com.itheima.pojo.Dept;
 import com.itheima.pojo.Result;
 import com.itheima.service.DeptService;
@@ -27,6 +28,7 @@ public class DeptController {
      */
     @GetMapping
     public Result list(){
+        log.info("查询所有部门");
         List<Dept> lists = deptService.findAll();
         return Result.success(lists);
     }
@@ -41,6 +43,7 @@ public class DeptController {
      * @param id
      * @return
      */
+    @Log
     @DeleteMapping
     public Result delete(Integer id){//方法形参和url传递的参数名一样的时候，可以省略注解
         //System.out.println("根据id删除数据："+id);
@@ -54,6 +57,7 @@ public class DeptController {
      * @param dept
      * @return
      */
+    @Log
     @PostMapping
     public Result add(@RequestBody Dept dept){
         //System.out.println("新增部门"+dept);
@@ -76,6 +80,7 @@ public class DeptController {
     /**
      * 根据ID修改部门
      */
+    @Log
     @PutMapping
     public Result update(@RequestBody Dept dept){
         //System.out.println("根据ID修改部门:"+dept);

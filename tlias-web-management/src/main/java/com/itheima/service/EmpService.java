@@ -1,9 +1,6 @@
 package com.itheima.service;
 
-import com.itheima.pojo.Emp;
-import com.itheima.pojo.EmpExpr;
-import com.itheima.pojo.EmpQueryParam;
-import com.itheima.pojo.PageResult;
+import com.itheima.pojo.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -46,7 +43,9 @@ public interface EmpService {
     void update(Emp emp);
 
 
-
     //判断部门下是否有员工
     List<Emp> isHasEmp(Integer deptId);
+
+    //登录
+    LoginInfo login(Emp emp);
 }

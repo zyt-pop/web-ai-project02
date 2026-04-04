@@ -30,3 +30,4 @@ aliyun:
     endpoint: https://oss-cn-beijing.aliyuncs.com
     bucketName: web-ai-code-zyt
     region: cn-beijing
+

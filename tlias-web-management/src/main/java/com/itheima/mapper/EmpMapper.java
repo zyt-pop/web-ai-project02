@@ -2,6 +2,7 @@ package com.itheima.mapper;
 
 import com.itheima.pojo.Emp;
 import com.itheima.pojo.EmpQueryParam;
+import com.itheima.pojo.LoginInfo;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDate;
@@ -60,4 +61,12 @@ public interface EmpMapper {
 
     //判断部门下是否有员工
     List<Emp> isHasEmp(Integer deptId);
+
+    /**
+     * 根据用户名和密码查询员工
+     * @param emp
+     * @return
+     */
+    @Select("select id,name,username from emp where username=#{username} and password=#{password}")
+    Emp selectByUsernameAndPassword(Emp emp);
 }

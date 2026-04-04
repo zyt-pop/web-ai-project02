@@ -7,17 +7,17 @@ import com.itheima.mapper.EmpMapper;
 import com.itheima.pojo.*;
 import com.itheima.service.EmpLogService;
 import com.itheima.service.EmpService;
-import org.apache.ibatis.javassist.expr.Instanceof;
+import com.itheima.utils.JwtUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+@Slf4j
 @Service
 public class EmpServiceImpl implements EmpService {
 
@@ -27,22 +27,6 @@ public class EmpServiceImpl implements EmpService {
     private EmpExprMapper empExprMapper;
     @Autowired
     private EmpLogService empLogService;
-    /**
-     * PageHelper分页查询
-     */
-//        @Override
-//        public PageResult<Emp>page(Integer page, Integer pageSize, String name, Integer gender, LocalDate begin, LocalDate end){
-//            //1.设置分页参数
-//            PageHelper.startPage(page,pageSize);//拦截器拦截，将分页参数设置到sql中，并执行查询
-//            //2.执行查询
-//            List<Emp> empList = empMapper.list(name,gender,begin,end);
-//            //3.解析查询结果，并封装
-//            Page<Emp> p = (Page<Emp>)empList;//empList 能直接强转为 Page<Emp>是因为PageHelper拦截了Mapper查询方法，返回的不是普通List，而是Page对象。
-//                                            //Page extends ArrayList implements List,这实际是向下转型
-//            return new PageResult<Emp>(p.getTotal(),p.getResult());
-//        }
-
-
     /**
      * 条件查询
      */
@@ -57,7 +41,6 @@ public class EmpServiceImpl implements EmpService {
                                             //Page extends ArrayList implements List,这实际是向下转型
             return new PageResult<Emp>(p.getTotal(),p.getResult());
     }
-
     /**
      * 查询所有员工信息
      */
@@ -66,7 +49,9 @@ public class EmpServiceImpl implements EmpService {
         List<Emp> empList = empMapper.list(new EmpQueryParam());
         return empList;
     }
-
+    /**
+     * 新增员工
+     */
     @Transactional(rollbackFor = Exception.class)       //事务管理-默认出现运行时异常RuntimeException才会回滚
     @Override
     public void save(Emp emp) throws Exception {
@@ -93,8 +78,9 @@ public class EmpServiceImpl implements EmpService {
             empLogService.insertLog(empLog);
         }
     }
-
-
+    /**
+     * 删除员工
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delete(List<Integer> ids) {
@@ -103,7 +89,6 @@ public class EmpServiceImpl implements EmpService {
         //删除员工工作信息
         empExprMapper.deleteByEmpIds(ids);
     }
-
     /**
      * 根据id查员工
      */
@@ -132,10 +117,33 @@ public class EmpServiceImpl implements EmpService {
             empExprMapper.insertBatch(exprList);
         }
     }
-
+    /**
+     * 判断部门下是否有员工
+     */
     @Override
     public List<Emp> isHasEmp(Integer deptId) {
         List<Emp> empList = empMapper.isHasEmp(deptId);
         return empList;
+    }
+
+    /**
+     *登录
+     * @param emp
+     * @return
+     */
+    @Override
+    public LoginInfo login(Emp emp) {
+        Emp e = empMapper.selectByUsernameAndPassword(emp);
+        if (e!=null) {
+            log.info("用户登录成功！用户信息为：{}",e);
+            //生成JWT令牌
+            HashMap<String, Object> dataMap = new HashMap<>();
+            dataMap.put("id",e.getId());
+            dataMap.put("username",e.getUsername());
+            String jwt = JwtUtils.generateToken(dataMap);
+
+            return new LoginInfo(e.getId(),e.getName(),e.getUsername(),jwt);
+        }
+        return null;
     }
 }
